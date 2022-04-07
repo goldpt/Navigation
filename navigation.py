@@ -7,7 +7,7 @@ destination = input('도착지를 입력하세요 : ')
 def navigation(start, destination):
     import time
     url = 'https://map.naver.com/v5/directions/-/-/-/transit?c=14369089.5036386,4194531.2959524,15,0,0,0,dh'
-    driver = webdriver.Chrome('D:\\anaconda3\\envs\\chatbot\\bin\\conversation_detect\\chromedriver.exe')
+    driver = webdriver.Chrome('chromedriver.exe')
     driver.get(url)
 
     # 출발지 입력
@@ -27,7 +27,7 @@ def navigation(start, destination):
         '//*[@id="container"]/shrinkable-layout/div/directions-layout/directions-result/div[1]/div/directions-search/div[2]/button[2]')
     driver.execute_script("arguments[0].click();", element)
 
-    time.sleep(0.6)
+    time.sleep(0.7)
 
     # 최소 환승순
     element1 = driver.find_element_by_xpath(
@@ -45,19 +45,8 @@ def navigation(start, destination):
     startpoint = driver.find_element_by_xpath(start_path).text
     destinationpoint = driver.find_element_by_xpath(destination_path).text
 
-    if (method.__contains__('선')):
-        vehicle = '지하철'
-        answer = f'{startpoint}에서 {vehicle} {method}을 타고 {destinationpoint}에서 하차하세요. 예상 소요 시간은 {time}입니다.'
-        print(answer)
-    elif (method.__contains__('동해')):
-        answer = f'{startpoint}에서 동해선을 타고 {destinationpoint}에서 하차하세요. 예상 소요 시간은 {time}입니다.'
-        print(answer)
-    else:
-        vehicle = '버스'
-        answer = f'{method}번 {vehicle}를 타고 {startpoint} 정거장에서 승차 후 {destinationpoint} 정거장에서 하차하세요. 예상 소요 시간은 {time}입니다.'
-        print(answer)
+    answer = "교통 수단 : " + method + "\n소요 시간 : " + time + '\n출발지 : ' + startpoint + '\n도착지 : ' + destinationpoint
 
-import time
-start__ = time.time()
-navigation(start, destination)
-print('대답 생성 시간 : ', time.time()-start__, '초')
+    return answer
+
+print(navigation(start, destination))
